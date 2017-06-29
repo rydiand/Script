@@ -54,6 +54,6 @@ import sys
 #print("\t".join(sys.argv[2]))
 
 from datetime import date 
-a = date(2017,7,8)
-b = date(2017,6,21)
+a = date(2017,11,2)
+b = date(2017,6,29)
 print ((a-b).days)
