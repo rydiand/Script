@@ -49,6 +49,8 @@ import datetime
 now = datetime.datetime.now()
 today = datetime.date(now.year, now.month, now.day)
 print(Employee.is_workday(today))
+idag = today.strftime("%Y,%m,%d")
+print(idag)
 
 import sys
 #print("\t".join(sys.argv[2]))
