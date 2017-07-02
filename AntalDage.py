@@ -28,7 +28,7 @@ def is_day(day):
 
 def open_db():
 	conn = sqlite3.connect('AntalDage.db')
-	print("Database opened.")
+	#print("Database opened.")
 	return(conn)
 
 def num_days(today, dat):
@@ -43,9 +43,9 @@ def read_db(conn):
 	count = 0
 	lineno  = []
 	for row in cursor:
-   		print("ID = ", row[0])
-   		print("Begivenhed = ", row[1])
-   		print("Dato = ", row[2], "\n")
+   		#print("ID = ", row[0])
+   		#print("Begivenhed = ", row[1])
+   		#print("Dato = ", row[2], "\n")
    		lineno.append(row[0])
    		beg.append(row[1])
    		dat.append(row[2])
@@ -54,28 +54,29 @@ def read_db(conn):
 
 def close_db(conn):
 	conn.close()
-	print("Database closed.")
+	#print("Database closed.")
 
 conn = open_db()
 import datetime
-now = datetime.datetime.now()
-today = datetime.date(now.year, now.month, now.day)
-print(today)
+today = datetime.date.today()
+
+#print(today)
 
 from datetime import date 
 #print(num_days(date(today),date("2017,11,2")))
 
 lineno, beg, dat, count = read_db(conn)
-print(lineno)
-print(beg)
-print(dat)
-dato = dat[0].replace("-",",")
-print("Min dato", dato)
+
+#print(lineno)
+#print(beg)
+#print(dat)
+for x in range(0, count):
+	dato = datetime.datetime.strptime(dat[x], "%Y-%m-%d").date()
+	count_days = num_days(today,dato)
+	print("Antal dage", count_days, "til", beg[x], ",", dato, "som er en",is_day(dato))
+	
 #print((dato-today).days)
 print(count)
 close_db(conn)
 
-a = date(2017,12,12)
-print(a)
-print(is_day(a))
-print("Operation done successfully, bye, bye.")
+#print("Operation done successfully, bye, bye.")
