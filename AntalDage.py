@@ -52,11 +52,18 @@ def read_db(conn):
    		count = count + 1
 	return lineno, beg, dat, count
 
-def opret_dato():
+def opret_dato(conn):
 	print("Opret dato")
+	#c = conn.cursor()
+	beg = input("Angiv begivenhed:")
+	dat = input("Angiv dato (YYYY-MM-DD):")
+	conn.execute("INSERT into Dage (ID, begivenhed, dato) values(null, ?, ?)", (beg, dat))
+	conn.commit()
 
-def slet_dato():
+def slet_dato(conn, id):
 	print("Slet dato")
+	conn.execute("DELETE from Dage where ID = ?", id)
+	conn.commit()
 
 def close_db(conn):
 	conn.close()
@@ -82,16 +89,21 @@ lineno, beg, dat, count = read_db(conn)
 #print(lineno)
 #print(beg)
 #print(dat)
-print("1. Læs alle datoer")
-print("2. Opret en dato")
-print("3. Slet en dato")
-answer = input("Vælg:")
-if answer == "1":
-	print_all(lineno, dat, beg, today)
-if answer == "2":
-	opret_dato()
-if answer == "3":
-	slet_dato()
+answer = 'n'
+while answer.upper() != 'X':
+	print("1. Læs alle datoer")
+	print("2. Opret en dato")
+	print("3. Slet en dato")
+	print("x. Afslut")
+	answer = input("Vælg:")
+	if answer == "1":
+		print_all(lineno, dat, beg, today)
+	if answer == "2":
+		opret_dato(conn)
+	if answer == "3":
+		id = input("Hvilken record?")
+		slet_dato(conn, id)
+
 #print((dato-today).days)
 #print(count)
 close_db(conn)
