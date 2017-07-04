@@ -37,7 +37,7 @@ def num_days(today, dat):
 
 
 def read_db(conn):
-	cursor = conn.execute("SELECT ID, begivenhed, dato from Dage")
+	cursor = conn.execute("SELECT ID, begivenhed, dato from Dage order by dato")
 	beg = []
 	dat = []
 	count = 0
@@ -53,7 +53,7 @@ def read_db(conn):
 	return lineno, beg, dat, count
 
 def opret_dato(conn):
-	print("Opret dato")
+	#print("Opret dato")
 	#c = conn.cursor()
 	beg = input("Angiv begivenhed:")
 	dat = input("Angiv dato (YYYY-MM-DD):")
@@ -61,15 +61,23 @@ def opret_dato(conn):
 	conn.commit()
 
 def slet_dato(conn, id):
-	print("Slet dato")
+	#print("Slet dato")
 	conn.execute("DELETE from Dage where ID = ?", id)
 	conn.commit()
+
+def opdater_dato(conn, id):
+	print("Opdater dato",id)
+	beg = input("Angiv begivenhed:")
+	dat = input("Angiv dato (YYYY-MM-DD):")
+	conn.execute("UPDATE Dage set begivenhed = ?, dato = ? where ID = ?", (beg, dat, id))
+	conn.commit()
+
 
 def close_db(conn):
 	conn.close()
 	#print("Database closed.")
 
-def print_all(lineno, dat, beg, today):
+def print_all(lineno, dat, beg, today, count):
 	for x in range(0, count):
 		dato = datetime.datetime.strptime(dat[x], "%Y-%m-%d").date()
 		count_days = num_days(today,dato)
@@ -93,16 +101,25 @@ answer = 'n'
 while answer.upper() != 'X':
 	print("1. Læs alle datoer")
 	print("2. Opret en dato")
-	print("3. Slet en dato")
+	print("3. Opdater dato")
+	print("4. Slet en dato")
 	print("x. Afslut")
 	answer = input("Vælg:")
 	if answer == "1":
-		print_all(lineno, dat, beg, today)
+		print_all(lineno, dat, beg, today, count)
 	if answer == "2":
 		opret_dato(conn)
 	if answer == "3":
 		id = input("Hvilken record?")
+		opdater_dato(conn, id)
+	if answer == "4":
+		id = input("Hvilken record?")
 		slet_dato(conn, id)
+	if answer != "1":
+		#close_db(conn)
+		#conn = open_db()
+		lineno, beg, dat, count = read_db(conn)
+
 
 #print((dato-today).days)
 #print(count)
