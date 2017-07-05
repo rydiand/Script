@@ -43,7 +43,7 @@ def read_db(conn):
 	count = 0
 	lineno  = []
 	for row in cursor:
-   		#print("ID = ", row[0])
+   		print("ID = ", row[0])
    		#print("Begivenhed = ", row[1])
    		#print("Dato = ", row[2], "\n")
    		lineno.append(row[0])
@@ -115,7 +115,7 @@ while answer.upper() != 'X':
 	if answer == "4":
 		id = input("Hvilken record?")
 		slet_dato(conn, id)
-	if answer != "1":
+	if (answer != "1" and answer.upper() != 'X'):
 		#close_db(conn)
 		#conn = open_db()
 		lineno, beg, dat, count = read_db(conn)
