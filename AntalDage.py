@@ -43,7 +43,7 @@ def read_db(conn):
 	count = 0
 	lineno  = []
 	for row in cursor:
-   		print("ID = ", row[0])
+   		#print("ID = ", row[0])
    		#print("Begivenhed = ", row[1])
    		#print("Dato = ", row[2], "\n")
    		lineno.append(row[0])
@@ -81,7 +81,7 @@ def print_all(lineno, dat, beg, today, count):
 	for x in range(0, count):
 		dato = datetime.datetime.strptime(dat[x], "%Y-%m-%d").date()
 		count_days = num_days(today,dato)
-		print(lineno[x],"Antal dage", count_days, "til", beg[x], ",", dato, "som er en",is_day(dato))
+		print(lineno[x],"\tAntal dage:\t", count_days, "\ttil", beg[x], ",\t", dato, "som er en",is_day(dato))
 
 conn = open_db()
 import datetime
