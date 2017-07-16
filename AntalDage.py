@@ -78,11 +78,11 @@ def close_db(conn):
 	#print("Database closed.")
 
 def print_all(lineno, dat, beg, today, count):
-	print("Nr.\tDage\tDato\t\tUgedag\t\tBegivenhed")
+	print("Nr.\t Dage\t Dato\t\t Ugedag\t\t Begivenhed")
 	for x in range(0, count):
 		dato = datetime.datetime.strptime(dat[x], "%Y-%m-%d").date()
 		count_days = num_days(today,dato)
-		print(lineno[x],"\t", count_days, "\t", dato, "\t",is_day(dato), "\t", beg[x])
+		print(repr(lineno[x]).rjust(3),"\t", repr(count_days).rjust(3), "\t", dato, "\t",is_day(dato), "\t", beg[x])
 
 conn = open_db()
 import datetime
