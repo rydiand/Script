@@ -1,0 +1,435 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"c",
+				"conn"
+			],
+			[
+				"in",
+				"int"
+			],
+			[
+				"coun",
+				"count_days"
+			],
+			[
+				"beg",
+				"begdate"
+			],
+			[
+				"t",
+				"today"
+			],
+			[
+				"co",
+				"count"
+			],
+			[
+				"dat",
+				"dat"
+			],
+			[
+				"close",
+				"close_db"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "MyDatabase.py",
+			"settings":
+			{
+				"buffer_size": 330,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "# MyDatabase"
+			}
+		},
+		{
+			"file": "MyHTML.py",
+			"settings":
+			{
+				"buffer_size": 660,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "#MyHTML"
+			}
+		},
+		{
+			"file": "MyFirstClass.py",
+			"settings":
+			{
+				"buffer_size": 1511,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "import sqlite3\n\ndef is_day(day):\n\twd = \"wrong\"\n\t\n\tif day.weekday() == 0:\n\t\twd = \"Mandag\"\n\t\n\tif day.weekday() == 1:\n\t\twd = \"Tirsdag\"\n\n\tif day.weekday() == 2:\n\t\twd = \"Onsdag\"\n\n\tif day.weekday() == 3:\n\t\twd = \"Torsdag\"\n\n\tif day.weekday() == 4:\n\t\twd = \"Fredag\"\n\n\tif day.weekday() == 5:\n\t\twd = \"Lørdag\"\n\n\tif day.weekday() == 6:\n\t\twd = \"Søndag\"\n\t\t\n\treturn wd\n\ndef open_db():\n\tconn = sqlite3.connect('AntalDage.db')\n\t#print(\"Database opened.\")\n\treturn(conn)\n\ndef num_days(today, dat):\n\tfrom datetime import date \n\treturn (dat-today).days\n\n\ndef read_db(conn):\n\tcursor = conn.execute(\"SELECT ID, begivenhed, dato from Dage order by dato\")\n\tbeg = []\n\tdat = []\n\tcount = 0\n\tlineno  = []\n\tfor row in cursor:\n   \t\t#print(\"ID = \", row[0])\n   \t\t#print(\"Begivenhed = \", row[1])\n   \t\t#print(\"Dato = \", row[2], \"\\n\")\n   \t\tlineno.append(row[0])\n   \t\tbeg.append(row[1])\n   \t\tdat.append(row[2])\n   \t\tcount = count + 1\n\treturn lineno, beg, dat, count\n\ndef opret_dato(conn):\n\t#print(\"Opret dato\")\n\t#c = conn.cursor()\n\tbeg = input(\"Angiv begivenhed:\")\n\tdat = input(\"Angiv dato (YYYY-MM-DD):\")\n\tconn.execute(\"INSERT into Dage (ID, begivenhed, dato) values(null, ?, ?)\", (beg, dat))\n\tconn.commit()\n\ndef slet_dato(conn, id):\n\t#print(\"Slet dato\")\n\tconn.execute(\"DELETE from Dage where ID = ?\", id)\n\tconn.commit()\n\ndef opdater_dato(conn, id):\n\tprint(\"Opdater dato\",id)\n\tbeg = input(\"Angiv begivenhed:\")\n\tdat = input(\"Angiv dato (YYYY-MM-DD):\")\n\tconn.execute(\"UPDATE Dage set begivenhed = ?, dato = ? where ID = ?\", (beg, dat, id))\n\tconn.commit()\n\n\ndef close_db(conn):\n\tconn.close()\n\t#print(\"Database closed.\")\n\ndef print_all(lineno, dat, beg, today, count):\n\tprint(\"Nr.\\t Dage\\t Dato\\t\\t Ugedag\\t\\t Begivenhed\")\n\tfor x in range(0, count):\n\t\tdato = datetime.datetime.strptime(dat[x], \"%Y-%m-%d\").date()\n\t\tcount_days = num_days(today,dato)\n\t\tprint(repr(lineno[x]).rjust(3), \"\\t\", repr(count_days).rjust(3), \"\\t\", dato, \"\\t\",is_day(dato), \"\\t\", beg[x])\n\nconn = open_db()\nimport datetime\ntoday = datetime.date.today()\n\n#print(today)\n\nfrom datetime import date \n#print(num_days(date(today),date(\"2017,11,2\")))\n\nlineno, beg, dat, count = read_db(conn)\n\n#print(lineno)\n#print(beg)\n#print(dat)\nanswer = 'n'\nwhile answer.upper() != 'X':\n\tprint(\"1. Læs alle datoer\")\n\tprint(\"2. Opret en dato\")\n\tprint(\"3. Opdater dato\")\n\tprint(\"4. Slet en dato\")\n\tprint(\"x. Afslut\")\n\tanswer = input(\"Vælg:\")\n\tif answer == \"1\":\n\t\tprint_all(lineno, dat, beg, today, count)\n\tif answer == \"2\":\n\t\topret_dato(conn)\n\tif answer == \"3\":\n\t\tid = input(\"Hvilken record?\")\n\t\topdater_dato(conn, id)\n\tif answer == \"4\":\n\t\tid = input(\"Hvilken record?\")\n\t\tslet_dato(conn, id)\n\tif (answer != \"1\" and answer.upper() != 'X'):\n\t\t#close_db(conn)\n\t\t#conn = open_db()\n\t\tlineno, beg, dat, count = read_db(conn)\n\n\n#print((dato-today).days)\n#print(count)\nclose_db(conn)\n\n#print(\"Operation done successfully, bye, bye.\")",
+			"file": "AntalDage.py",
+			"file_size": 2964,
+			"file_write_time": 131446829977181928,
+			"settings":
+			{
+				"buffer_size": 2833,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "readme.txt",
+			"settings":
+			{
+				"buffer_size": 109,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 81.0,
+		"last_filter": "resource",
+		"selected_items":
+		[
+			[
+				"resource",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"Package Control: Install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/opt/git_repo/script"
+	],
+	"file_history":
+	[
+		"/C/Users/torben/AppData/Roaming/Sublime Text 3/Packages/PackageResourceViewer/PackageResourceViewer.sublime-settings",
+		"/C/Users/torben/AppData/Roaming/Sublime Text 3/Packages/Default/Main.sublime-menu",
+		"/C/Users/torben/AppData/Roaming/Sublime Text 3/Packages/User/PackageResourceViewer.sublime-settings",
+		"/C/Users/torben/AppData/Roaming/Sublime Text 3/Packages/User/Python/MyFirstPython.py",
+		"/C/opt/git_repo/script/MySecond.py",
+		"/C/opt/git_repo/script/MyFirstClass.py"
+	],
+	"find":
+	{
+		"height": 21.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Æ",
+			"æå"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"#",
+			"{}"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "MyDatabase.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 330,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								330,
+								330
+							]
+						],
+						"settings":
+						{
+							"auto_name": "# MyDatabase",
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "MyHTML.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 660,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								207,
+								207
+							]
+						],
+						"settings":
+						{
+							"auto_name": "#MyHTML",
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "MyFirstClass.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1511,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1510,
+								1492
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 390.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "AntalDage.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2833,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1841,
+								1841
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1020.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "readme.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 109,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								109,
+								109
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 21.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 154.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Python/Python.sublime-build",
+	"project": "Script.sublime-project",
+	"replace":
+	{
+		"height": 38.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
